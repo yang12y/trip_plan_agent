@@ -1,0 +1,17 @@
+# 忽略环境变量文件
+.env
+
+# 忽略Python编译文件
+__pycache__/
+*.pyc
+
+# 忽略IDE文件
+.idea/
+.vscode/
+
+# 忽略操作系统文件
+Thumbs.db
+.DS_Store
+
+# 忽略测试文件
+/test/
