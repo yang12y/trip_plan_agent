@@ -12,14 +12,14 @@ async def test_attraction_plan_node():
     initial_state = TravelPlanState(
         user_id="user1",
         messages=[
-            HumanMessage(content="从上海去北京，1月1-3日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁")
+            HumanMessage(content="从南昌去上海，3月24-27日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁")
         ],
         count=1,
-        origin_city="上海",
-        destination_city="北京",
+        origin_city="南昌",
+        destination_city="上海",
         current_step="collect_preferences",
-        travel_dates=(datetime.datetime(2025, 1, 1, 0, 0), datetime.datetime(2025, 1, 3, 23, 59, 59)),
-        number_of_days=3,
+        travel_dates=(datetime.datetime(2026, 3, 24, 0, 0, 0), datetime.datetime(2026, 3, 27, 23, 59, 59)),
+        number_of_days=4,
         number_of_travelers=3,
         age_distribution={'adult': 2, 'child': 1},
         interests=['文化', '自然', '美食'],
@@ -43,9 +43,7 @@ async def test_attraction_plan_node():
         
         print("更新后的状态:")
         print(f"attraction_data: {updated_state.get('attraction_data', 'N/A')}")
-        print(f"count: {updated_state.get('count', 'N/A')}")
         print(f"current_step: {updated_state.get('current_step', 'N/A')}")
-        print(f"steps: {updated_state.get('steps', 'N/A')}")
         print(f"weather_info: {updated_state.get('weather_info', 'N/A')}")
         
     except Exception as e:

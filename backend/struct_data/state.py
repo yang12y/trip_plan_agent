@@ -14,6 +14,21 @@ class LocationInfo(BaseModel):
     origin_location: str = Field(default="", description="Starting location")
     destination_location: str = Field(default="", description="Destination location")
 
+
+class AttractionInfo(BaseModel):
+    attraction_name: str = Field(default="", description="景点名称")
+    attraction_location: str = Field(default="", description="景点位置")
+    attraction_type: str = Field(default="", description="景点类型")
+    attraction_description: str = Field(default="", description="景点描述")
+    attraction_price: float | None = Field(default=None, description="景点价格")
+    attraction_time: str = Field(default="", description="景点开放时间")
+    attraction_adapt_person: str = Field(default="", description="景点的适合人群")
+    attraction_special: str = Field(default="", description="景点的特色")
+    attraction_play_time_range: str = Field(default="", description="景点的建议游玩时间")
+    attraction_score: int = Field(default=0, description="景点的评分")
+
+
+
 class TravelPlanState(BaseModel):
     user_id: str
 

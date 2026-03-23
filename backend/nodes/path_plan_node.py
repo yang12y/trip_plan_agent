@@ -17,7 +17,7 @@ async def path_plan_node(state: TravelPlanState) -> TravelPlanState:
 
     # 路径规划智能体执行
     try:
-        response = await path_plan_agent.ainvoke(user_input)
+        response = await path_plan_agent.ainvoke({"messages": [user_input]})
 
         # 从模型返回的结构化响应中提取路径规划信息
         path_plan = response["structured_response"]

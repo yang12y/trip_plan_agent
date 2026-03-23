@@ -18,7 +18,6 @@ class DeepSeekModel:
         self.attraction_plan_model = ChatDeepSeek(
             api_key=Config.DEEPSEEK_API_KEY_1,
             model="deepseek-chat",
-            max_tokens = 8192
         )
 
     def get_collect_preferences_model(self):
