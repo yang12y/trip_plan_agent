@@ -53,6 +53,7 @@ class TravelPlanState(BaseModel):
 
     # 系统状态
     current_step: str = Field(default="init")
+    steps: Annotated[List[str], add] = Field(default_factory=list)
     needs_user_confirmation: bool = Field(default=False)
     pending_modifications: Annotated[List[dict], add] = Field(default_factory=list)
 

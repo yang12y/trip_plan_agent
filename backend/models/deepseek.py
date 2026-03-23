@@ -14,6 +14,12 @@ class DeepSeekModel:
             model="deepseek-chat",
             max_tokens = 8192
         )
+        
+        self.attraction_plan_model = ChatDeepSeek(
+            api_key=Config.DEEPSEEK_API_KEY_1,
+            model="deepseek-chat",
+            max_tokens = 8192
+        )
 
     def get_collect_preferences_model(self):
         """
@@ -26,3 +32,9 @@ class DeepSeekModel:
         获取PathPlan模型
         """
         return self.path_plan_model
+        
+    def get_attraction_plan_model(self):
+        """
+        获取AttractionPlan模型
+        """
+        return self.attraction_plan_model

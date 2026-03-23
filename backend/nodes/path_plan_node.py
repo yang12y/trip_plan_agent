@@ -34,6 +34,7 @@ async def path_plan_node(state: TravelPlanState) -> TravelPlanState:
             "messages": [user_input, ai_msg],
             "count": state.count + 1,
             "current_step": "path_plan",
+            "steps": ["path_plan"],
         }
     except Exception as e:
         print(f"路径规划失败: {e}")

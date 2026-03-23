@@ -35,4 +35,5 @@ async def collect_preferences_node(state: TravelPlanState) -> TravelPlanState:
         "messages": [ai_msg],
         "count": state.count + 1,
         "current_step": "collect_preferences",
+        "steps": ["collect_preferences"],
     }

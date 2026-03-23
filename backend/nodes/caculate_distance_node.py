@@ -52,6 +52,8 @@ async def caculate_distance_node(state: TravelPlanState) -> TravelPlanState:
         **state.model_dump(),  # 包含所有状态字段
         "location_info": location_info,  # 包含计算得到的位置信息字段
         "distance": float(distance)/1000,  # 包含计算得到的距离字段
+        "steps": ["caculate_distance"],
+        "current_step": "caculate_distance",
     }
 
 if __name__ == "__main__":
