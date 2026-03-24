@@ -18,7 +18,7 @@ async def test_path_plan_node():
         origin_city="上海",
         destination_city="北京",
         current_step="collect_preferences",
-        travel_dates=(datetime.datetime(2025, 1, 1, 0, 0), datetime.datetime(2025, 1, 3, 23, 59, 59)),
+        travel_dates=(datetime.datetime(2026, 3, 24, 0, 0, 0), datetime.datetime(2026, 3, 26, 23, 59, 59)),
         number_of_days=3,
         number_of_travelers=3,
         age_distribution={'adult': 2, 'child': 1},

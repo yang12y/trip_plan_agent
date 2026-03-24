@@ -27,6 +27,20 @@ class AttractionInfo(BaseModel):
     attraction_play_time_range: str = Field(default="", description="景点的建议游玩时间")
     attraction_score: int = Field(default=0, description="景点的评分")
 
+class WeatherInfo(BaseModel):
+    date: str = Field(default="", description="日期，格式为 YYYY-MM-DD")
+    week: str = Field(default="", description="星期几，1 表示周一，2 表示周二，以此类推")
+    dayweather: str = Field(default="", description="白天的天气状况")
+    nightweather: str = Field(default="", description="晚上 的天气状况")
+    daytemp: float = Field(default=0.0, description="白天的温度，单位为摄氏度")
+    nighttemp: float = Field(default=0.0, description="晚上 的温度，单位为摄氏度")
+    daywind: str = Field(default="", description="白天的风向")
+    nightwind: str = Field(default="", description="晚上的风向")
+    daypower: str = Field(default="", description="白天风力等级")
+    nightpower: str = Field(default="", description="晚上的风力等级")
+    daytemp_float: float = Field(default=0.0, description="白天温度的浮点表示")
+    nighttemp_float: float = Field(default=0.0, description="晚上的温度的浮点表示")
+
 
 
 class TravelPlanState(BaseModel):
@@ -62,9 +76,10 @@ class TravelPlanState(BaseModel):
     distance: float = Field(default=0.0)
 
     # 实时数据
-    weather_info: Dict[str, dict] = Field(default_factory=dict)
-    attraction_data: Dict[str, dict] = Field(default_factory=dict)
+    weather_info: Dict[str, WeatherInfo] = Field(default_factory=dict)
+    attraction_data: Dict[str, dict[str,AttractionInfo]] = Field(default_factory=dict)
     transportation_data: Dict[str, dict] = Field(default_factory=dict)
+    daily_weather_data: Dict[str, WeatherInfo] = Field(default_factory=dict)
 
     # 系统状态
     current_step: str = Field(default="init")

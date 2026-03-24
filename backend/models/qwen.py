@@ -15,8 +15,8 @@ class QwenModel:
     def __init__(self):
         self.model = qwen_model
         
-    def get_attraction_plan_model(self):
+    def get_update_plan_model(self):
         """
-        获取AttractionPlan模型
+        获取UpdatePlan模型
         """
         return self.model
