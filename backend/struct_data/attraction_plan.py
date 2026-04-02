@@ -6,6 +6,13 @@ from struct_data.state import AttractionInfo, WeatherInfo
 
 
 class AttractionPlan(BaseModel):
-    attraction_data: Dict[str, dict[str,AttractionInfo]] = Field(default_factory=dict, description="景点数据,包含每天推荐游玩的景点的详细信息")
-    weather_info: Dict[str, WeatherInfo] = Field(default_factory=dict, description="天气信息,包含每天的天气信息")
+    attraction_data: Dict[str, dict[str,AttractionInfo]] = Field(
+        default_factory=dict, 
+        description="景点数据,包含每天推荐游玩的景点的详细信息，键为日期，键为YYYY-MM-DD，值为该天推荐游玩的景点字典，景点字典的键为景点名称，值为景点的详细信息"
+        )
+
+    weather_info: Dict[str, WeatherInfo] = Field(
+        default_factory=dict, 
+        description="天气信息,包含每天的天气信息，键为YYYY-MM-DD，值为该天的天气信息字典"
+        )
    

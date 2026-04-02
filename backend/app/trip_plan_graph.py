@@ -5,6 +5,7 @@ from nodes.collection_preferences_node import collect_preferences_node
 from nodes.path_plan_node import path_plan_node
 from nodes.caculate_distance_node import caculate_distance_node
 from nodes.attraction_plan_node import attraction_plan_node
+from nodes.save_node import save_node
 import asyncio
 
 # 初始化图
@@ -13,19 +14,21 @@ graph.add_node("preferences", collect_preferences_node)
 graph.add_node("path_plan", path_plan_node)
 graph.add_node("caculate_distance", caculate_distance_node)
 graph.add_node("attraction_plan", attraction_plan_node)
+graph.add_node("save_node", save_node)
+
 graph.add_edge(START, "preferences")
 graph.add_edge("preferences", "caculate_distance")
 graph.add_edge("caculate_distance", "path_plan")
 graph.add_edge("path_plan", "attraction_plan")
-graph.add_edge("attraction_plan", END)
-app = graph.compile()
+graph.add_edge("attraction_plan", "save_node")
+graph.add_edge("save_node", END)
+trip_plan_graph = graph.compile()
 
 # 初始化状态
 initial_state = TravelPlanState(
     user_id="user1",
-    messages=[HumanMessage(content="从南昌去上海，1月1-3日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁")]
+    messages=[HumanMessage(content="从南昌去上海，2026年1月1-3日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁")]
 )
 
-updated_state = asyncio.run(app.ainvoke(initial_state))
-
-print(updated_state['attraction_data'])
+updated_state = asyncio.run(trip_plan_graph.ainvoke(initial_state))
+print(updated_state.messages)

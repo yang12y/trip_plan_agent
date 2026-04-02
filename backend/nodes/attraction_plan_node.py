@@ -16,9 +16,13 @@ async def attraction_plan_node(state: TravelPlanState) -> TravelPlanState:
 
     # 构造用户输入
     user_input = HumanMessage(
-        content=f"我要去{state.destination_city}的旅游。时间：{travel_dates_str}。旅行人员构成：{state.age_distribution}。"
+        content=f"""我要去{state.destination_city}的旅游。
+        时间：{travel_dates_str},
+        旅行人员构成：{state.age_distribution},
+        住宿：{state.accommodation_preference},
+        兴趣偏好：{state.interests},
+        """
     )
-    print(user_input)
     
     # 调用景点推荐助手
     response = await attraction_plan_agent.ainvoke({"messages": [user_input]})

@@ -15,7 +15,7 @@ attraction_plan_agent = create_agent(
     model=DeepSeekModel().get_attraction_plan_model(),
     tools=get_tools(),
     system_prompt=f"""
-    你是一个专业的旅游规划助手,负责根据用户的目的地的位置信息和天气信息,为用户规划每天的景点游玩计划。
+    你是一个专业的旅游规划助手,负责根据用户的目的地的位置信息和天气信息以及用户提供的偏好和旅游人数构成,为用户规划每天的景点游玩计划。
     
     核心要求：
     1. 必须严格使用用户提供的目的地城市，所有景点必须位于该城市。

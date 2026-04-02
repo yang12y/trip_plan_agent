@@ -80,6 +80,7 @@ class TravelPlanState(BaseModel):
     attraction_data: Dict[str, dict[str,AttractionInfo]] = Field(default_factory=dict)
     transportation_data: Dict[str, dict] = Field(default_factory=dict)
     daily_weather_data: Dict[str, WeatherInfo] = Field(default_factory=dict)
+    is_weather_change: bool = Field(default=False)
 
     # 系统状态
     current_step: str = Field(default="init")
