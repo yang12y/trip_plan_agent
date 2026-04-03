@@ -6,6 +6,7 @@ from nodes.path_plan_node import path_plan_node
 from nodes.caculate_distance_node import caculate_distance_node
 from nodes.attraction_plan_node import attraction_plan_node
 from nodes.save_node import save_node
+from nodes.budget_plan_node import budget_plan_node
 import asyncio
 
 # 初始化图
@@ -15,12 +16,15 @@ graph.add_node("path_plan", path_plan_node)
 graph.add_node("caculate_distance", caculate_distance_node)
 graph.add_node("attraction_plan", attraction_plan_node)
 graph.add_node("save_node", save_node)
+graph.add_node("budget_plan", budget_plan_node)
 
 graph.add_edge(START, "preferences")
 graph.add_edge("preferences", "caculate_distance")
 graph.add_edge("caculate_distance", "path_plan")
 graph.add_edge("path_plan", "attraction_plan")
-graph.add_edge("attraction_plan", "save_node")
+graph.add_edge("attraction_plan", "budget_plan")
+graph.add_edge("budget_plan", "save_node")
+
 graph.add_edge("save_node", END)
 trip_plan_graph = graph.compile()
 
@@ -30,5 +34,6 @@ initial_state = TravelPlanState(
     messages=[HumanMessage(content="从南昌去上海，2026年1月1-3日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁")]
 )
 
-updated_state = asyncio.run(trip_plan_graph.ainvoke(initial_state))
-print(updated_state.messages)
+if __name__ == "__main__":
+    updated_state = asyncio.run(trip_plan_graph.ainvoke(initial_state))
+    print(updated_state.messages)

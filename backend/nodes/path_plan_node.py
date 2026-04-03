@@ -1,4 +1,4 @@
-from agents.path_plan_agent import path_plan_agent
+from agents.path_plan_agent import get_path_plan_agent
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from struct_data.state import TravelPlanState
 
@@ -17,6 +17,8 @@ async def path_plan_node(state: TravelPlanState) -> TravelPlanState:
 
     # 路径规划智能体执行
     try:
+        # 获取path_plan_agent
+        path_plan_agent = get_path_plan_agent()
         response = await path_plan_agent.ainvoke({"messages": [user_input]})
 
         # 从模型返回的结构化响应中提取路径规划信息

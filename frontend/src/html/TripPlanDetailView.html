@@ -1,0 +1,139 @@
+<div class="container">
+  <div v-if="isLoading" class="card loading-card">
+    <div class="card-body">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>加载中...</p>
+      </div>
+    </div>
+  </div>
+
+  <div v-else-if="!tripPlan" class="card empty-card">
+    <div class="card-body">
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h2>暂无旅行计划</h2>
+        <p>您还没有创建旅行计划，请先创建一个旅行计划。</p>
+        <router-link to="/trip-plan/create" class="btn btn-primary">
+          创建旅行计划
+        </router-link>
+      </div>
+    </div>
+  </div>
+  
+  <div v-else-if="error" class="card error-card">
+    <div class="card-body">
+      <div class="alert alert-error">
+        {{ error }}
+      </div>
+      <button @click="fetchTripPlan" class="btn btn-primary">
+        重试
+      </button>
+    </div>
+  </div>
+  
+  <div v-else class="card">
+    <div class="card-header">
+      <h1>{{ tripPlan.destination_city }} 旅行计划</h1>
+      <div class="trip-plan-meta">
+        <p>用户ID: {{ tripPlan.user_id }}</p>
+        <p>旅行日期: {{ formatDate(tripPlan.travel_dates[0]) }} 至 {{ formatDate(tripPlan.travel_dates[1]) }}</p>
+        <p>旅行天数: {{ tripPlan.number_of_days }} 天</p>
+        <p>旅行人数: {{ tripPlan.number_of_travelers }} 人</p>
+        <p>兴趣偏好: {{ tripPlan.interests.join(', ') }}</p>
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <!-- 天气信息 -->
+      <div class="section">
+        <h2 class="section-title">天气信息</h2>
+        <div v-if="Object.keys(tripPlan.weather_info).length === 0" class="empty-state">
+          <div class="empty-icon">🌤️</div>
+          <p>暂无天气信息</p>
+        </div>
+        <div v-else class="weather-grid">
+          <div v-for="(weather, date) in tripPlan.weather_info" :key="date" class="weather-card">
+            <div class="weather-date">{{ date }}</div>
+            <div class="weather-details">
+              <p class="weather-condition">{{ weather.dayweather }}</p>
+              <p class="weather-temp">{{ weather.daytemp }}°C</p>
+              <p class="weather-wind">{{ weather.daywind }} {{ weather.daypower }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 景点安排 -->
+      <div class="section">
+        <h2 class="section-title">景点安排</h2>
+        <div v-if="Object.keys(tripPlan.attraction_data).length === 0" class="empty-state">
+          <div class="empty-icon">🏖️</div>
+          <p>暂无景点安排</p>
+        </div>
+        <div v-else class="attraction-list">
+          <div v-for="(attractions, date) in tripPlan.attraction_data" :key="date" class="attraction-day">
+            <h3 class="day-title">{{ date }}</h3>
+            <div v-for="(attraction, name) in attractions" :key="name" class="attraction-card">
+              <h4 class="attraction-name">{{ attraction.attraction_name || name }}</h4>
+              <div class="attraction-details">
+                <p><span class="label">位置:</span> {{ attraction.attraction_location }}</p>
+                <p><span class="label">类型:</span> {{ attraction.attraction_type }}</p>
+                <p><span class="label">开放时间:</span> {{ attraction.attraction_time }}</p>
+                <p><span class="label">建议游玩时间:</span> {{ attraction.attraction_play_time_range }}</p>
+                <p class="attraction-description">{{ attraction.attraction_description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 交通信息 -->
+      <div class="section">
+        <h2 class="section-title">交通信息</h2>
+        <div v-if="Object.keys(tripPlan.transportation_data).length === 0" class="empty-state">
+          <div class="empty-icon">🚗</div>
+          <p>暂无交通信息</p>
+        </div>
+        <div v-else class="transportation-card">
+          <pre>{{ JSON.stringify(tripPlan.transportation_data, null, 2) }}</pre>
+        </div>
+      </div>
+      
+      <!-- 预算信息 -->
+      <div class="section">
+        <h2 class="section-title">预算信息</h2>
+        <div class="budget-summary">
+          <p>总预算: <span class="budget-amount">{{ tripPlan.total_budget }} {{ tripPlan.currency }}</span></p>
+        </div>
+        <div v-if="tripPlan.budget_breakdown.length === 0" class="empty-state">
+          <div class="empty-icon">💰</div>
+          <p>暂无预算明细</p>
+        </div>
+        <div v-else class="budget-grid">
+          <div v-for="(item, index) in tripPlan.budget_breakdown" :key="index" class="budget-card">
+            <h4 class="budget-item-name">{{ item.item_name }}</h4>
+            <p class="budget-category">{{ item.category }}</p>
+            <div class="budget-amounts">
+              <p>预估: {{ item.estimated_cost }} {{ tripPlan.currency }}</p>
+              <p>实际: {{ item.actual_cost }} {{ tripPlan.currency }}</p>
+            </div>
+            <p class="budget-status" :class="{ 'paid': item.is_paid }">
+              {{ item.is_paid ? '已支付' : '未支付' }}
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 操作按钮 -->
+      <div class="action-buttons">
+        <router-link :to="`/trip-plan/update/${tripPlan.user_id}`" class="btn btn-primary">
+          更新旅行计划
+        </router-link>
+        <router-link to="/trip-plan/create" class="btn btn-secondary">
+          创建新计划
+        </router-link>
+      </div>
+    </div>
+  </div>
+</div>

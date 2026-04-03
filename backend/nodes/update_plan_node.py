@@ -1,5 +1,5 @@
 from langchain_core.messages import HumanMessage
-from agents.update_plan import update_plan_agent
+from agents.update_plan import get_update_plan_agent
 from struct_data.state import TravelPlanState
 from datetime import datetime
 
@@ -29,6 +29,7 @@ async def update_plan_node(state: TravelPlanState) -> TravelPlanState:
     )
 
     # 调用更新计划助手
+    update_plan_agent = get_update_plan_agent()
     response = await update_plan_agent.ainvoke({"messages": [user_input]})
 
     # 获取结构化输出

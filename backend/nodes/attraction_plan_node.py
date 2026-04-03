@@ -1,6 +1,6 @@
 from struct_data.state import TravelPlanState
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
-from agents.attraction_plan_agent import attraction_plan_agent
+from agents.attraction_plan_agent import get_attraction_plan_agent
 
 async def attraction_plan_node(state: TravelPlanState) -> TravelPlanState:
     """
@@ -25,6 +25,7 @@ async def attraction_plan_node(state: TravelPlanState) -> TravelPlanState:
     )
     
     # 调用景点推荐助手
+    attraction_plan_agent = get_attraction_plan_agent()
     response = await attraction_plan_agent.ainvoke({"messages": [user_input]})
 
     # 获取结构化输出

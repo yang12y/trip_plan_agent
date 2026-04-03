@@ -25,6 +25,11 @@ class DeepSeekModel:
             model="deepseek-chat",
         )
 
+        self.budget_plan_model = ChatDeepSeek(
+            api_key=Config.DEEPSEEK_API_KEY_1,
+            model="deepseek-chat",
+        )
+
     def get_collect_preferences_model(self):
         """
         获取CollectPreferences模型
@@ -48,3 +53,9 @@ class DeepSeekModel:
         获取Climate模型
         """
         return self.climate_model
+        
+    def get_budget_plan_model(self):
+        """
+        获取BudgetPlan模型
+        """
+        return self.budget_plan_model
