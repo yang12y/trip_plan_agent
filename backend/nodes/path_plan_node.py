@@ -18,7 +18,7 @@ async def path_plan_node(state: TravelPlanState) -> TravelPlanState:
     # 路径规划智能体执行
     try:
         # 获取path_plan_agent
-        path_plan_agent = get_path_plan_agent()
+        path_plan_agent = await get_path_plan_agent()
         response = await path_plan_agent.ainvoke({"messages": [user_input]})
 
         # 从模型返回的结构化响应中提取路径规划信息
@@ -30,22 +30,21 @@ async def path_plan_node(state: TravelPlanState) -> TravelPlanState:
         print("计划行程完成")
 
         # 更新状态
-        return {
-            **state.model_dump(),
-            **path_plan.model_dump(exclude_unset=True),
-            "messages": [user_input, ai_msg],
-            "count": state.count + 1,
-            "current_step": "path_plan",
-            "steps": ["path_plan"],
-        }
+        for key, value in path_plan.model_dump(exclude_unset=True).items():
+            setattr(state, key, value)
+        state.messages = [user_input, ai_msg]
+        state.count = state.count + 1
+        state.current_step = "path_plan"
+        state.steps = ["path_plan"]
+        
+        return state
     except Exception as e:
         print(f"路径规划失败: {e}")
-        # 返回一个包含错误信息的状态
-        return {
-            **state.model_dump(),
-            "messages": [user_input, AIMessage(content=f"路径规划失败: {str(e)}")],
-            "count": state.count + 1,
-            "current_step": "error",
-            "error_message": str(e)
-        }
+        # 更新状态
+        state.messages = [user_input, AIMessage(content=f"路径规划失败: {str(e)}")]
+        state.count = state.count + 1
+        state.current_step = "error"
+        state.error_message = str(e)
+        
+        return state
    

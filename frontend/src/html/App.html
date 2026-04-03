@@ -1,9 +1,32 @@
 <div class="app">
   <!-- 导航栏 -->
   <nav class="navbar">
+    <div class="weather-container">
+      <div class="weather-dropdown" v-if="!isLoadingWeather && weatherData">
+        <div class="weather-main">
+          <span class="weather-icon">{{ getWeatherIcon(weatherData[Object.keys(weatherData)[0]].dayweather) }}</span>
+          <span class="weather-info">{{ weatherData[Object.keys(weatherData)[0]].dayweather }} {{ weatherData[Object.keys(weatherData)[0]].daytemp_float }}°C</span>
+        </div>
+        <div class="weather-dropdown-content">
+          <div v-for="(weather, date) in weatherData" :key="date" class="weather-day">
+            <div class="weather-date">{{ date }}</div>
+            <div class="weather-details">
+              <div class="weather-icon">{{ getWeatherIcon(weather.dayweather) }}</div>
+              <div class="weather-info">
+                <div class="weather-condition">{{ weather.dayweather }}</div>
+                <div class="weather-temp">{{ weather.daytemp_float }}°C</div>
+                <div class="weather-wind">{{ weather.daywind }} {{ weather.daypower }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container">
-      <div class="navbar-brand">
-        <h1 class="brand-name">智能旅行规划系统</h1>
+      <div class="navbar-left">
+        <div class="navbar-brand">
+          <h1 class="brand-name">智能旅行规划系统</h1>
+        </div>
       </div>
       <div class="navbar-links">
         <RouterLink to="/trip-plan/create" class="navbar-link">
@@ -23,11 +46,4 @@
   <main class="main-content">
     <RouterView />
   </main>
-
-  <!-- 页脚 -->
-  <footer class="footer">
-    <div class="container">
-      <p class="footer-text">© 2026 智能旅行规划系统. 保留所有权利.</p>
-    </div>
-  </footer>
 </div>

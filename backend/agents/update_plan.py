@@ -37,11 +37,10 @@ async def init_update_plan_agent():
         response_format=AttractionPlan,
     )
 
-# 提供一个同步函数来获取agent
-def get_update_plan_agent():
+# 提供一个异步函数来获取agent
+async def get_update_plan_agent():
     global update_plan_agent
     if update_plan_agent is None:
         # 在第一次调用时初始化
-        import asyncio
-        asyncio.run(init_update_plan_agent())
+        await init_update_plan_agent()
     return update_plan_agent

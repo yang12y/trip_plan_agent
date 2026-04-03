@@ -48,13 +48,13 @@ async def caculate_distance_node(state: TravelPlanState) -> TravelPlanState:
     print(f"转换为公里：：{float(distance)/1000}公里")
     print("计算行程距离完成")
     
-    return {
-        **state.model_dump(),  # 包含所有状态字段
-        "location_info": location_info,  # 包含计算得到的位置信息字段
-        "distance": float(distance)/1000,  # 包含计算得到的距离字段
-        "steps": ["caculate_distance"],
-        "current_step": "caculate_distance",
-    }
+    # 更新状态
+    state.location_info = location_info
+    state.distance = float(distance)/1000
+    state.steps = ["caculate_distance"]
+    state.current_step = "caculate_distance"
+    
+    return state
 
 if __name__ == "__main__":
     initial_state = TravelPlanState(

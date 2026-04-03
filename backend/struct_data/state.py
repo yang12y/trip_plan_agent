@@ -45,12 +45,13 @@ class WeatherInfo(BaseModel):
 
 # 新增预算明细模型
 class BudgetItem(BaseModel):
-    category: str = Field(default="", description="预算类别：交通/住宿/门票/餐饮/购物/其他")
-    item_name: str = Field(default="", description="项目名称")
-    estimated_cost: float = Field(default=0.0, description="预估费用")
-    actual_cost: float = Field(default=0.0, description="实际费用")
-    is_paid: bool = Field(default=False, description="是否已支付")
-    notes: str = Field(default="", description="备注")
+    category: str = Field(description="类别：交通/住宿/门票/餐饮/购物/其他")
+    item_name: str = Field(description="项目名称")
+    estimated_cost: float = Field(description="预估费用")
+    cost_range: str = Field(description="价格区间，如：200-300")
+    is_essential: bool = Field(description="是否必需")
+    save_tips: str = Field(default="", description="省钱建议")
+
 
 class TravelPlanState(BaseModel):
     user_id: str
@@ -66,10 +67,6 @@ class TravelPlanState(BaseModel):
     number_of_days: int = Field(default=0)
     number_of_travelers: int = Field(default=0)
     age_distribution: Annotated[Dict[str, int], merge_dicts] = Field(default_factory=dict)
-
-    # 预算信息
-    total_budget: float = Field(default=0.0)
-    budget_breakdown: Annotated[Dict[str, float], merge_dicts] = Field(default_factory=dict)
 
     # 兴趣偏好
     interests: List[str] = Field(default_factory=list)
@@ -100,5 +97,4 @@ class TravelPlanState(BaseModel):
     # 预算信息
     total_budget: float = Field(default=0.0, description="总预算")
     budget_breakdown: List[BudgetItem] = Field(default_factory=list, description="预算明细")
-    currency: str = Field(default="CNY", description="货币类型")
 

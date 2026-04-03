@@ -1,4 +1,4 @@
-from struct_data.state import TravelPlanState
+from struct_data.state import TravelPlanState, AttractionInfo, WeatherInfo
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from agents.attraction_plan_agent import get_attraction_plan_agent
 
@@ -25,7 +25,7 @@ async def attraction_plan_node(state: TravelPlanState) -> TravelPlanState:
     )
     
     # 调用景点推荐助手
-    attraction_plan_agent = get_attraction_plan_agent()
+    attraction_plan_agent = await get_attraction_plan_agent()
     response = await attraction_plan_agent.ainvoke({"messages": [user_input]})
 
     # 获取结构化输出
@@ -38,11 +38,26 @@ async def attraction_plan_node(state: TravelPlanState) -> TravelPlanState:
     print("景点推荐完成")
     
     # 更新状态
-    return {
-        **state.model_dump(),
-        **attraction_data.model_dump(exclude_unset=True),
-        "messages": [user_input, ai_msg],
-        "count": state.count + 1,
-        "current_step": "attraction_plan",
-        "steps": ["attraction_plan"],
-    }
+    for key, value in attraction_data.model_dump(exclude_unset=True).items():
+        if key == "weather_info" and isinstance(value, dict):
+            # 转换weather_info中的字典为WeatherInfo对象
+            weather_info = {}
+            for date, weather_dict in value.items():
+                weather_info[date] = WeatherInfo(**weather_dict)
+            setattr(state, key, weather_info)
+        elif key == "attraction_data" and isinstance(value, dict):
+            # 转换attraction_data中的字典为AttractionInfo对象
+            attraction_data_dict = {}
+            for date, attractions in value.items():
+                attraction_data_dict[date] = {}
+                for attraction_name, attraction_dict in attractions.items():
+                    attraction_data_dict[date][attraction_name] = AttractionInfo(**attraction_dict)
+            setattr(state, key, attraction_data_dict)
+        else:
+            setattr(state, key, value)
+    state.messages = [user_input, ai_msg]
+    state.count = state.count + 1
+    state.current_step = "attraction_plan"
+    state.steps = ["attraction_plan"]
+    
+    return state

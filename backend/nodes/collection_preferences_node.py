@@ -29,11 +29,12 @@ async def collect_preferences_node(state: TravelPlanState) -> TravelPlanState:
     ai_msg = AIMessage(content=ai_content)
     print("收集用户的旅游信息完成")
 
-    return {
-        **state.model_dump(),
-        **preferences.model_dump(exclude_unset=True),
-        "messages": [ai_msg],
-        "count": state.count + 1,
-        "current_step": "collect_preferences",
-        "steps": ["collect_preferences"],
-    }
+    # 更新状态
+    for key, value in preferences.model_dump(exclude_unset=True).items():
+        setattr(state, key, value)
+    state.messages = [ai_msg]
+    state.count = state.count + 1
+    state.current_step = "collect_preferences"
+    state.steps = ["collect_preferences"]
+    
+    return state

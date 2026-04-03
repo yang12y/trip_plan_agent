@@ -33,11 +33,10 @@ async def init_path_plan_agent():
         response_format=PathPlan,
     )
 
-# 提供一个同步函数来获取agent
-def get_path_plan_agent():
+# 提供一个异步函数来获取agent
+async def get_path_plan_agent():
     global path_plan_agent
     if path_plan_agent is None:
         # 在第一次调用时初始化
-        import asyncio
-        asyncio.run(init_path_plan_agent())
+        await init_path_plan_agent()
     return path_plan_agent

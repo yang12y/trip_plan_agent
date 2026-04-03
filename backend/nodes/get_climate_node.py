@@ -1,4 +1,4 @@
-from agents.climate_agent import  climate_agent
+from agents.climate_agent import get_climate_agent
 from struct_data.state import TravelPlanState
 from langchain_core.messages import HumanMessage
 import datetime
@@ -20,6 +20,7 @@ async def get_climate_node(state: TravelPlanState) -> TravelPlanState:
     input = HumanMessage(content=f"用户位置:{state.destination_city}, 日期: {today}")
     
     # 调用天气智能体
+    climate_agent = await get_climate_agent()
     response = await climate_agent.ainvoke({"messages": [input]})
     
     # 获取结构化信息
@@ -37,9 +38,8 @@ async def get_climate_node(state: TravelPlanState) -> TravelPlanState:
     print("获取天气信息完成")
 
     # 更新状态
-    return {
-        **state.model_dump(),
-        "daily_weather_data": daily_weather_data,
-        "is_weather_change": is_weather_change
-    }
+    state.daily_weather_data = daily_weather_data
+    state.is_weather_change = is_weather_change
+    
+    return state
    

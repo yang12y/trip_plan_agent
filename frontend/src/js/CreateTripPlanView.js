@@ -10,10 +10,9 @@ export default {
     const success = ref(false);
 
     const formData = ref({
-      userId: '',
+      user_id: '',
       message: '',
-      budget: 0,
-      currency: 'CNY'
+      budget: 0
     });
 
     async function createTripPlan() {

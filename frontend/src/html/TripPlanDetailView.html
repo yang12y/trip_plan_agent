@@ -116,11 +116,7 @@
             <p class="budget-category">{{ item.category }}</p>
             <div class="budget-amounts">
               <p>预估: {{ item.estimated_cost }} {{ tripPlan.currency }}</p>
-              <p>实际: {{ item.actual_cost }} {{ tripPlan.currency }}</p>
             </div>
-            <p class="budget-status" :class="{ 'paid': item.is_paid }">
-              {{ item.is_paid ? '已支付' : '未支付' }}
-            </p>
           </div>
         </div>
       </div>

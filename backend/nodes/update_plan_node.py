@@ -29,7 +29,7 @@ async def update_plan_node(state: TravelPlanState) -> TravelPlanState:
     )
 
     # 调用更新计划助手
-    update_plan_agent = get_update_plan_agent()
+    update_plan_agent = await get_update_plan_agent()
     response = await update_plan_agent.ainvoke({"messages": [user_input]})
 
     # 获取结构化输出

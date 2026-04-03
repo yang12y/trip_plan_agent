@@ -1,68 +1,76 @@
-<div class="container">
-  <div class="card">
-    <div class="card-header">
-      <h1>创建旅行计划</h1>
-      <p class="subtitle">请填写以下信息，我们将为您生成个性化的旅行计划</p>
-    </div>
-    <div class="card-body">
-      <form @submit.prevent="createTripPlan">
-        <div class="form-group">
-          <label for="userId">用户ID</label>
-          <input 
-            type="text" 
-            id="userId" 
-            v-model="formData.userId" 
-            required 
-            placeholder="请输入用户ID，例如：user123"
-          />
+<div class="create-trip-page">
+  <div class="create-trip-container">
+    <div class="card">
+      <div class="card-header">
+        <div class="header-content">
+          <h1>创建旅行计划</h1>
+          <p class="subtitle">请填写以下信息，我们将为您生成个性化的旅行计划</p>
+          <div class="header-decoration"></div>
         </div>
-        
-        <div class="form-group">
-          <label for="message">旅行计划请求</label>
-          <textarea 
-            id="message" 
-            v-model="formData.message" 
-            placeholder="例如：从南昌去上海，2026年1月1-3日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁"
-            required
-            rows="4"
-          ></textarea>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group">
-            <label for="budget">总预算</label>
-            <input 
-              type="number" 
-              id="budget" 
-              v-model="formData.budget" 
-              placeholder="0"
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="currency">货币类型</label>
-            <input 
-              type="text" 
-              id="currency" 
-              v-model="formData.currency" 
-              placeholder="CNY"
-            />
-          </div>
-        </div>
-        
-        <button type="submit" :disabled="isLoading" class="btn btn-primary">
-          <span v-if="isLoading" class="spinner"></span>
-          {{ isLoading ? '创建中...' : '创建旅行计划' }}
-        </button>
-      </form>
-      
-      <div v-if="error" class="alert alert-error">
-        {{ error }}
       </div>
-      
-      <div v-if="success" class="alert alert-success">
-        旅行计划创建成功！
-        <router-link :to="`/trip-plan/${formData.userId}`" class="alert-link">查看详情</router-link>
+      <div class="card-body">
+        <form @submit.prevent="createTripPlan" class="trip-form">
+          <div class="form-group">
+            <input 
+              v-model="formData.user_id" 
+              type="text" 
+              class="form-input"
+              placeholder="请输入用户ID，例如：user123"
+            >
+            <div class="form-label">
+              <span class="label-text">用户ID</span>
+              <div class="label-line"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <textarea 
+              v-model="formData.message" 
+              class="form-textarea"
+              placeholder="例如：从南昌去上海，2026年1月1-3日，2成人1小孩，喜欢文化、自然、美食，在酒店住宿，最好做高铁"
+              rows="4"
+            ></textarea>
+            <div class="form-label">
+              <span class="label-text">旅行计划请求</span>
+              <div class="label-line"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <input 
+              v-model="formData.budget" 
+              type="number" 
+              class="form-input"
+              placeholder="0"
+              min="0"
+            >
+            <div class="form-label">
+              <span class="label-text">总预算</span>
+              <div class="label-line"></div>
+            </div>
+          </div>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            :disabled="isLoading"
+          >
+            <span v-if="isLoading" class="spinner"></span>
+            <span v-else>创建旅行计划</span>
+          </button>
+        </form>
+        <div v-if="error" class="alert alert-error">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-content">
+            <strong>错误：</strong>{{ error }}
+          </div>
+        </div>
+        <div v-if="success" class="alert alert-success">
+          <span class="alert-icon">✅</span>
+          <div class="alert-content">
+            <strong>成功：</strong>旅行计划创建成功！
+            <router-link :to="`/trip-plan/${formData.user_id}`" class="alert-link">
+              查看计划
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
   </div>

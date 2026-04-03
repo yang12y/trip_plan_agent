@@ -28,11 +28,10 @@ async def init_climate_agent():
         system_prompt="你是一个专业的天气助手，能够根据用户的位置和日期，提供准确的天气信息。",
     )
 
-# 提供一个同步函数来获取agent
-def get_climate_agent():
+# 提供一个异步函数来获取agent
+async def get_climate_agent():
     global climate_agent
     if climate_agent is None:
         # 在第一次调用时初始化
-        import asyncio
-        asyncio.run(init_climate_agent())
+        await init_climate_agent()
     return climate_agent
